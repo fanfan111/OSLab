@@ -31,13 +31,13 @@ entry start
 start:
 
 	mov ax,#SETUPSEG
-	mov ds,ax
+	mov es,ax
 	
 	mov ah,#0x03
 	mov bh,bh
 	int 0x10
 
-	mov cx,#24
+	mov cx,#25
 	mov bx,#0x0007
 	mov bp,#msg1
 	mov ax,#0x1301
@@ -234,6 +234,13 @@ idt_48:
 gdt_48:
 	.word	0x800		! gdt limit=2048, 256 GDT entries
 	.word	512+gdt,0x9	! gdt base = 0X9xxxx
+
+msg1:
+	.byte 13,10
+	.ascii "Now we are in SETUP"
+	.byte 13,10,13,10	
+
+
 	
 .text
 endtext:

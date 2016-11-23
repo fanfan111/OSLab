@@ -1,12 +1,201 @@
-#!/bin/sh
-export OSLAB_PATH=$(dirname `which $0`)
 
-if [ ! -e "$OSLAB_PATH/hdc/umounted" ]; then
-	echo umount hdc first
-	sudo umount $OSLAB_PATH/hdc
-	if [ "$?" != "0" ]; then
-		exit
-	fi
-fi
 
-$OSLAB_PATH/gdb -x $OSLAB_PATH/gdb-cmd.txt $OSLAB_PATH/linux-0.11/tools/system
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+	new file:   bochs/BIOS-bochs-latest
+	new file:   bochs/bochs-dbg
+	new file:   bochs/bochs-gdb
+	new file:   bochs/bochsrc-gdb.bxrc
+	new file:   bochs/bochsrc.bxrc
+        new file:   bochs/vgabios.bin
+	new file:   bochsout.txt
+	new file:   dbg-asm
+	new file:   dbg-c
+	new file:   gdb
+	new file:   gdb-cmd.txt
+	new file:   hdc-0.11.img
+	new file:   hdc/umounted
+	new file:   linux-0.11/Image
+	new file:   linux-0.11/Makefile
+	new file:   linux-0.11/System.map
+	new file:   linux-0.11/boot/bootsect
+	new file:   linux-0.11/boot/bootsect.o
+	new file:   linux-0.11/boot/bootsect.s
+	new file:   linux-0.11/boot/head.o
+	new file:   linux-0.11/boot/head.s
+	new file:   linux-0.11/boot/setup
+	new file:   linux-0.11/boot/setup.o
+	new file:   linux-0.11/boot/setup.s
+	new file:   linux-0.11/fs/Makefile
+	new file:   linux-0.11/fs/bitmap.c
+	new file:   linux-0.11/fs/bitmap.o
+	new file:   linux-0.11/fs/block_dev.c
+	new file:   linux-0.11/fs/block_dev.o
+	new file:   linux-0.11/fs/buffer.c
+	new file:   linux-0.11/fs/buffer.o
+	new file:   linux-0.11/fs/char_dev.c
+	new file:   linux-0.11/fs/char_dev.o
+	new file:   linux-0.11/fs/exec.c
+	new file:   linux-0.11/fs/exec.o
+	new file:   linux-0.11/fs/fcntl.c
+	new file:   linux-0.11/fs/fcntl.o
+	new file:   linux-0.11/fs/file_dev.c
+	new file:   linux-0.11/fs/file_dev.o
+	new file:   linux-0.11/fs/file_table.c
+	new file:   linux-0.11/fs/file_table.o
+	new file:   linux-0.11/fs/fs.o
+	new file:   linux-0.11/fs/inode.c
+	new file:   linux-0.11/fs/inode.o
+	new file:   linux-0.11/fs/ioctl.c
+	new file:   linux-0.11/fs/ioctl.o
+	new file:   linux-0.11/fs/namei.c
+	new file:   linux-0.11/fs/namei.o
+	new file:   linux-0.11/fs/open.c
+	new file:   linux-0.11/fs/open.o
+	new file:   linux-0.11/fs/pipe.c
+	new file:   linux-0.11/fs/pipe.o
+	new file:   linux-0.11/fs/read_write.c
+	new file:   linux-0.11/fs/read_write.o
+	new file:   linux-0.11/fs/stat.c
+	new file:   linux-0.11/fs/stat.o
+new file:   linux-0.11/fs/super.c
+	new file:   linux-0.11/fs/super.o
+	new file:   linux-0.11/fs/truncate.c
+	new file:   linux-0.11/fs/truncate.o
+	new file:   linux-0.11/include/a.out.h
+	new file:   linux-0.11/include/asm/io.h
+	new file:   linux-0.11/include/asm/memory.h
+	new file:   linux-0.11/include/asm/segment.h
+	new file:   linux-0.11/include/asm/system.h
+	new file:   linux-0.11/include/const.h
+	new file:   linux-0.11/include/ctype.h
+	new file:   linux-0.11/include/errno.h
+	new file:   linux-0.11/include/fcntl.h
+	new file:   linux-0.11/include/linux/config.h
+	new file:   linux-0.11/include/linux/fdreg.h
+	new file:   linux-0.11/include/linux/fs.h
+	new file:   linux-0.11/include/linux/hdreg.h
+new file:   linux-0.11/include/linux/head.h
+	new file:   linux-0.11/include/linux/kernel.h
+	new file:   linux-0.11/include/linux/mm.h
+	new file:   linux-0.11/include/linux/sched.h
+	new file:   linux-0.11/include/linux/sched.h.cur1
+	new file:   linux-0.11/include/linux/sched.h.old
+	new file:   linux-0.11/include/linux/sys.h
+	new file:   linux-0.11/include/linux/tty.h
+	new file:   linux-0.11/include/signal.h
+	new file:   linux-0.11/include/stdarg.h
+	new file:   linux-0.11/include/stddef.h
+	new file:   linux-0.11/include/string.h
+	new file:   linux-0.11/include/sys/stat.h
+	new file:   linux-0.11/include/sys/times.h
+	new file:   linux-0.11/include/sys/types.h
+	new file:   linux-0.11/include/sys/utsname.h
+	new file:   linux-0.11/include/sys/wait.h
+	new file:   linux-0.11/include/termios.h
+	new file:   linux-0.11/include/time.h
+	new file:   linux-0.11/include/unistd.h
+	new file:   linux-0.11/include/utime.h
+	new file:   linux-0.11/init/main.c
+	new file:   linux-0.11/init/main.o
+new file:   linux-0.11/kernel/Makefile
+	new file:   linux-0.11/kernel/asm.o
+	new file:   linux-0.11/kernel/asm.s
+	new file:   linux-0.11/kernel/blk_drv/Makefile
+	new file:   linux-0.11/kernel/blk_drv/blk.h
+	new file:   linux-0.11/kernel/blk_drv/blk_drv.a
+	new file:   linux-0.11/kernel/blk_drv/floppy.c
+new file:   linux-0.11/kernel/blk_drv/floppy.o
+new file:   linux-0.11/kernel/blk_drv/hd.c
+	new file:   linux-0.11/kernel/blk_drv/hd.o
+	new file:   linux-0.11/kernel/blk_drv/ll_rw_blk.c
+	new file:   linux-0.11/kernel/blk_drv/ll_rw_blk.o
+	new file:   linux-0.11/kernel/blk_drv/ramdisk.c
+	new file:   linux-0.11/kernel/blk_drv/ramdisk.o
+	new file:   linux-0.11/kernel/chr_drv/Makefile
+	new file:   linux-0.11/kernel/chr_drv/chr_drv.a
+	new file:   linux-0.11/kernel/chr_drv/console.c
+	new file:   linux-0.11/kernel/chr_drv/console.o
+	new file:   linux-0.11/kernel/chr_drv/keyboard.S
+	new file:   linux-0.11/kernel/chr_drv/keyboard.o
+	new file:   linux-0.11/kernel/chr_drv/keyboard.s
+	new file:   linux-0.11/kernel/chr_drv/rs_io.o
+	new file:   linux-0.11/kernel/chr_drv/rs_io.s
+	new file:   linux-0.11/kernel/chr_drv/serial.c
+	new file:   linux-0.11/kernel/chr_drv/serial.o
+	new file:   linux-0.11/kernel/chr_drv/tty_io.c
+	new file:   linux-0.11/kernel/chr_drv/tty_io.o
+	new file:   linux-0.11/kernel/chr_drv/tty_ioctl.c
+	new file:   linux-0.11/kernel/chr_drv/tty_ioctl.o
+new file:   linux-0.11/kernel/exit.c
+	new file:   linux-0.11/kernel/exit.o
+	new file:   linux-0.11/kernel/fork.c
+	new file:   linux-0.11/kernel/fork.o
+	new file:   linux-0.11/kernel/kernel.o
+	new file:   linux-0.11/kernel/math/Makefile
+	new file:   linux-0.11/kernel/math/math.a
+	new file:   linux-0.11/kernel/math/math_emulate.c
+	new file:   linux-0.11/kernel/math/math_emulate.o
+	new file:   linux-0.11/kernel/mktime.c
+	new file:   linux-0.11/kernel/mktime.o
+	new file:   linux-0.11/kernel/panic.c
+	new file:   linux-0.11/kernel/panic.o
+	new file:   linux-0.11/kernel/printk.c
+	new file:   linux-0.11/kernel/printk.o
+	new file:   linux-0.11/kernel/sched.c
+	new file:   linux-0.11/kernel/sched.o
+	new file:   linux-0.11/kernel/signal.c
+	new file:   linux-0.11/kernel/signal.o
+	new file:   linux-0.11/kernel/sys.c
+	new file:   linux-0.11/kernel/sys.o
+	new file:   linux-0.11/kernel/system_call.o
+	new file:   linux-0.11/kernel/system_call.s
+	new file:   linux-0.11/kernel/traps.c
+	new file:   linux-0.11/kernel/traps.o
+	new file:   linux-0.11/kernel/vsprintf.c
+	new file:   linux-0.11/kernel/vsprintf.o
+	new file:   linux-0.11/lib/Makefile
+	new file:   linux-0.11/lib/_exit.c
+	new file:   linux-0.11/lib/_exit.o
+	new file:   linux-0.11/lib/close.c
+	new file:   linux-0.11/lib/close.o
+new file:   linux-0.11/lib/ctype.c
+	new file:   linux-0.11/lib/ctype.o
+	new file:   linux-0.11/lib/dup.c
+	new file:   linux-0.11/lib/dup.o
+new file:   linux-0.11/lib/errno.c
+	new file:   linux-0.11/lib/errno.o
+	new file:   linux-0.11/lib/execve.c
+	new file:   linux-0.11/lib/execve.o
+new file:   linux-0.11/lib/lib.a
+	new file:   linux-0.11/lib/malloc.c
+	new file:   linux-0.11/lib/malloc.o
+new file:   linux-0.11/lib/open.c
+	new file:   linux-0.11/lib/open.o
+	new file:   linux-0.11/lib/setsid.c
+	new file:   linux-0.11/lib/setsid.o
+	new file:   linux-0.11/lib/string.c
+	new file:   linux-0.11/lib/string.o
+	new file:   linux-0.11/lib/wait.c
+	new file:   linux-0.11/lib/wait.o
+	new file:   linux-0.11/lib/write.c
+	new file:   linux-0.11/lib/write.o
+new file:   linux-0.11/mm/Makefile
+	new file:   linux-0.11/mm/memory.c
+	new file:   linux-0.11/mm/memory.o
+	new file:   linux-0.11/mm/mm.o
+	new file:   linux-0.11/mm/page.o
+	new file:   linux-0.11/mm/page.s
+new file:   linux-0.11/tags
+new file:   linux-0.11/tools/build
+	new file:   linux-0.11/tools/build.c
+	new file:   linux-0.11/tools/system
+	new file:   mount-hdc
+	new file:   run
+	new file:   rungdb
+
