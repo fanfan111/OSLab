@@ -33,8 +33,8 @@ start:
 	mov ax,#SETUPSEG
 	mov es,ax
 	
-	mov ah,#0x03
-	mov bh,bh
+	mov ah,#0x03      !copy from bootsect.s print
+	xor bh,bh
 	int 0x10
 
 	mov cx,#25
@@ -58,6 +58,32 @@ start:
 	mov	ah,#0x88
 	int	0x15
 	mov	[2],ax
+
+	!Output the memory info
+	mov ah,#0x03
+	xor bh,bh
+	int 0x10
+        mov ax,cs
+	mov es,ax
+	mov cx,#13
+	mov bx,#0x0007
+	mov bp,#msg2
+	mov ax,#0x1301
+	int 0x10
+	
+	call print_hex
+
+	mov ah,#0x03
+	xor bh,bh
+	int 0x10
+        mov ax,cs
+	mov es,ax
+	mov cx,#4
+	mov bx,#0x0007
+	mov bp,#msg3
+	mov ax,#0x1301
+	int 0x10
+	call print_nl
 
 ! Get video-card data:
 
@@ -234,13 +260,46 @@ idt_48:
 gdt_48:
 	.word	0x800		! gdt limit=2048, 256 GDT entries
 	.word	512+gdt,0x9	! gdt base = 0X9xxxx
+print_hex:
+	push ax
+	push cx
+	push dx
+	mov cx,#4 		
+	mov dx,[2]	
+print_digit:
+	rol dx,#4		
+	mov ax,#0xe0f 	
+	and al,dl 		
+	add al,#0x30 	
+	cmp al,#0x3a
+	jl outp  		
+ 	add al,#0x07  	
+outp: 
+	int 0x10
+	loop print_digit
+	pop dx
+	pop cx
+	pop ax
+	ret
+
+print_nl:
+	push ax
+	mov ax,#0xe0d 
+	int 0x10
+	mov al,#0xa 
+	int 0x10
+	pop ax
+	ret
 
 msg1:
 	.byte 13,10
 	.ascii "Now we are in SETUP"
 	.byte 13,10,13,10	
-
-
+msg2:
+	.ascii "Memory size: "
+msg3:
+	.ascii "KB"
+	.byte 13,10	
 	
 .text
 endtext:
