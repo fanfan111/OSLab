@@ -54,15 +54,15 @@ start:
 	int	0x10		! save it in known place, con_init fetches
 	mov	[0],dx		! it from 0x90000.
 
-	!Output the guangbiao
+	! Output the cursor position
 	mov ah,#0x03
 	xor bh,bh
 	int 0x10
-        mov ax,cs
+    	mov ax,cs
 	mov es,ax
 	mov cx,#12
 	mov bx,#0x0007
-	mov bp,#msg2
+	mov bp,#msg4
 	mov ax,#0x1301
 	int 0x10
 
@@ -102,7 +102,6 @@ start:
 	mov bp,#msg3
 	mov ax,#0x1301
 	int 0x10
-	call print_nl
 
 ! Get video-card data:
 
@@ -132,6 +131,56 @@ start:
 	rep
 	movsb
 
+	! CL output hd0 data
+				
+	mov ah,#0x03
+	xor bh,bh
+	int 0x10
+	mov ax,cs
+	mov es,ax
+	mov cx,#6
+	mov bx,#0x0007
+	mov bp,#msg5
+	mov ax,#0x1301
+	int 0x10
+	
+	call print_hex_hh
+
+	call print_nl
+	
+	mov ah,#0x03
+	xor bh,bh
+	int 0x10
+	mov ax,cs
+	mov es,ax
+	mov cx,#7
+	mov bx,#0x0007
+	mov bp,#msg6
+	mov ax,#0x1301
+	int 0x10
+
+	call print_hex_hhh
+
+	call print_nl
+	
+	mov ah,#0x03
+	xor bh,bh
+	int 0x10
+	mov ax,cs
+	mov es,ax
+	mov cx,#9
+	mov bx,#0x0007
+	mov bp,#msg7
+	mov ax,#0x1301
+	int 0x10
+
+	call print_hex_hhhh
+
+	call print_nl
+	call print_nl
+	
+	
+	
 ! Get hd1 data
 
 	mov	ax,#0x0000
@@ -330,7 +379,91 @@ print_nl:
 	int 0x10
 	pop ax
 	ret
-
+	
+print_hex_hh:
+	push ax
+	push cx
+	push dx
+	push ds
+	push bx
+	mov bx, #0x9000
+	mov ds, bx
+	mov cx,#4
+	mov dx,[128]	
+print_digit_dd:
+	rol dx,#4
+	mov ax,#0xe0f 	
+	and al,dl 		
+	add al,#0x30 	
+	cmp al,#0x3a
+	jl outp_pp  		
+ 	add al,#0x07
+outp_pp: 
+	int 0x10
+	loop print_digit_dd
+	pop bx
+	pop ds
+	pop dx
+	pop cx
+	pop ax
+	ret	
+	
+print_hex_hhh:
+	push ax
+	push cx
+	push dx
+	push ds
+	push bx
+	mov bx, #0x9000
+	mov ds, bx
+	mov cx,#4
+	mov dx,[130]
+print_digit_ddd:
+	rol dx,#4
+	mov ax,#0xe0f 	
+	and al,dl 		
+	add al,#0x30 	
+	cmp al,#0x3a
+	jl outp_pp  		
+ 	add al,#0x07
+outp_ppp: 
+	int 0x10
+	loop print_digit_ddd
+	pop bx
+	pop ds
+	pop dx
+	pop cx
+	pop ax
+	ret
+	
+print_hex_hhhh:
+	push ax
+	push cx
+	push dx
+	push ds
+	push bx
+	mov bx, #0x9000
+	mov ds, bx
+	mov cx,#4
+	mov dx,[142]
+print_digit_dddd:
+	rol dx,#4
+	mov ax,#0xe0f 	
+	and al,dl 		
+	add al,#0x30 	
+	cmp al,#0x3a
+	jl outp_pp  		
+ 	add al,#0x07
+outp_pppp: 
+	int 0x10
+	loop print_digit_dddd
+	pop bx
+	pop ds
+	pop dx
+	pop cx
+	pop ax
+	ret
+	
 msg1:
 	.byte 13,10
 	.ascii "Now we are in SETUP"
@@ -341,7 +474,13 @@ msg3:
 	.ascii "KB"
 	.byte 13,10	
 msg4:
-	.ascii "Cursor POS: "	
+	.ascii "Cursor POS: "
+msg5:
+	.ascii "Cyls: "
+msg6:
+	.ascii "Heads: "
+msg7:
+ 	.ascii "Sectors: "	
 .text
 endtext:
 .data
