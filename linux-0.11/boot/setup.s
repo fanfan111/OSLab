@@ -53,6 +53,25 @@ start:
 	xor	bh,bh
 	int	0x10		! save it in known place, con_init fetches
 	mov	[0],dx		! it from 0x90000.
+
+	!Output the guangbiao
+	mov ah,#0x03
+	xor bh,bh
+	int 0x10
+        mov ax,cs
+	mov es,ax
+	mov cx,#12
+	mov bx,#0x0007
+	mov bp,#msg2
+	mov ax,#0x1301
+	int 0x10
+
+	call print_hex2
+	call print_nl
+
+
+
+
 ! Get memory size (extended mem, kB)
 
 	mov	ah,#0x88
@@ -264,8 +283,8 @@ print_hex:
 	push ax
 	push cx
 	push dx
-	mov cx,#4 		
-	mov dx,[2]	
+	mov cx,#4		
+	mov dx,[2]
 print_digit:
 	rol dx,#4		
 	mov ax,#0xe0f 	
@@ -282,6 +301,27 @@ outp:
 	pop ax
 	ret
 
+print_hex2:
+	push ax
+	push cx
+	push dx
+	mov cx,#4		
+	mov dx,[0]
+print_digit2:
+	rol dx,#4		
+	mov ax,#0xe0f 	
+	and al,dl 		
+	add al,#0x30 	
+	cmp al,#0x3a
+	jl outp2 		
+ 	add al,#0x07  	
+outp2: 
+	int 0x10
+	loop print_digit2
+	pop dx
+	pop cx
+	pop ax
+	ret
 print_nl:
 	push ax
 	mov ax,#0xe0d 
@@ -300,7 +340,8 @@ msg2:
 msg3:
 	.ascii "KB"
 	.byte 13,10	
-	
+msg4:
+	.ascii "Cursor POS: "	
 .text
 endtext:
 .data
