@@ -1,39 +1,70 @@
-#define __LIBRARY__
+#define _LIBRARY_
 #include <unistd.h>
 #include <errno.h>
 #include <asm/segment.h>
 
-char tmp[32] = {0};
+char store[64]={0}; //to store parameter name
 
 int sys_iam(const char* name) {
 	int i = 0;
+	//judge if the length of name is out of 23
+	//if it's the case, return -1 and set errno = -EINVAL
 	while (get_fs_byte(name+i) != 0) {
-		++i;
+		i++;	
 	}
+
 	if (i > 23) {
 		return -EINVAL;
-		// in _syscall, errno = -__res, so return -EINVAL
 	}
+
+	printk("iam1: %d\n", i);
+
 	i = 0;
-	while ((tmp[i] = get_fs_byte(name+i)) != 0) {
-		++i;
+	
+	//clean the cache
+	for (i = 0; i < 64; i++) {
+		store[i] = 0;
 	}
+
+	i = 0;
+
+	//then copy name's content into store
+	//to assume that we write in name's content to kernel
+	while (get_fs_byte(name+i) != 0) {
+		store[i] = get_fs_byte(name+i);
+		i++;
+	}
+
+	printk("iam2: %s\n", store);
+	printk("iam2: %d\n", i);
+
 	return i;
 }
 
 int sys_whoami(char* name, unsigned int size) {
 	int i = 0;
-	while (tmp[i] != 0) {
-		++i;
+	
+	//judge if store's length is out of size
+	//if it's the case, return -1 and set errno = -EINVAL
+	while (store[i] != 0) {
+		i++;
 	}
-	if (size < i) {
+	if (i > size) {
 		return -EINVAL;
-	}
+	}	
+
+	printk("whoami1: %d\n", i);
+
 	i = 0;
-	while (tmp[i] != 0) {
-		put_fs_byte(tmp[i], (name+i));
-		// put_fs_byte(src, dst)
-		++i;
+
+	//then copy store's content into name
+
+	while (store[i] != 0) {
+		put_fs_byte(store[i], name+i);
+		i++;
 	}
+	
+	printk("whoami2: %d\n", i);
+
 	return i;
 }

@@ -130,8 +130,7 @@
 #define __NR_setreuid	70
 #define __NR_setregid	71
 
-/** CL macro definition*/
-#define __NR_iam			72
+#define __NR_iam		72
 #define __NR_whoami		73
 
 #define _syscall0(type,name) \
