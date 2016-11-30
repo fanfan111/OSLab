@@ -178,7 +178,7 @@ start:
 
 	call print_nl
 	call print_nl
-	
+	call loop_me
 	
 	
 ! Get hd1 data
@@ -463,24 +463,34 @@ outp_pppp:
 	pop cx
 	pop ax
 	ret
+
+loop_me:
+	loop loop_me
 	
 msg1:
 	.byte 13,10
 	.ascii "Now we are in SETUP"
-	.byte 13,10,13,10	
+	.byte 13,10,13,10
+	
 msg2:
 	.ascii "Memory size: "
+
 msg3:
 	.ascii "KB"
-	.byte 13,10	
+	.byte 13,10
+	
 msg4:
 	.ascii "Cursor POS: "
+
 msg5:
 	.ascii "Cyls: "
+
 msg6:
 	.ascii "Heads: "
+
 msg7:
- 	.ascii "Sectors: "	
+ 	.ascii "Sectors: "
+	
 .text
 endtext:
 .data
