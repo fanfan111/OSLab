@@ -452,7 +452,7 @@ void con_write(struct tty_struct * tty)
 		GETCH(tty->write_q,c);
 		/*add start*/
 if(judge){
-	if((c>='a'&&a<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')){
+	if((c>='a'&&c<='z')||(c>='A'&&c<='Z')||(c>='0'&&c<='9')){
 		c=42;	
 	}
 }
